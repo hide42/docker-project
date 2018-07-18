@@ -2,7 +2,7 @@ version: '2'
 
 services:
   nginx:
-   container_name: nginx1
+   container_name: some-nginx1
    image: nginx:1.13
    restart: always
    ports:
@@ -41,16 +41,6 @@ services:
     depends_on:
       - zoo1
 
-  spring1:
-    hostname: spring1
-    depends_on:
-      - kafka1
-    build: ./demo/
-    expose:
-    - "8080"
-    ports:
-    - "8080:8080"
-
   producer1:
     hostname: producer1
     depends_on:
@@ -58,3 +48,17 @@ services:
     build: ./ruproducer/
     volumes: 
       - ./producer-data:/var/lib/cache/
+
+  app:
+    restart: always
+    build: ./app
+    working_dir: /app
+    volumes:
+      - ./app:/app
+      - ~/.m2:/root/.m2
+    expose:
+      - "8080"
+    command: mvn clean spring-boot:run
+    depends_on:
+      - nginx
+
