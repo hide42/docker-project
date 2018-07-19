@@ -4,7 +4,6 @@ services:
   nginx:
    container_name: some-nginx1
    image: nginx:1.13
-   restart: always
    ports:
    - 80:80
    - 443:443
